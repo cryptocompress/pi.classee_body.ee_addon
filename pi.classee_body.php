@@ -22,7 +22,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'ClassEE Body',
-	'pi_version'		=> '1.0',
+	'pi_version'		=> '1.0.1',
 	'pi_author'			=> 'Derek Hogue',
 	'pi_author_url'		=> 'http://amphibian.info',
 	'pi_description'	=> 'Applies dynamic classes to your BODY tag.',
@@ -34,11 +34,14 @@ class Classee_body
 
 	function Classee_body()
 	{
-		global $IN, $SESS, $PREFS;
+		global $TMPL, $IN, $SESS, $PREFS;
 		
 		$this->return_data = '';
 		
-		$r = ' class="';
+		$r = '';		
+		$attr = $TMPL->fetch_param('attr');
+		$open = ( $attr == 'false' ) ? '' : ' class="';
+		$close = ( $attr == 'false' ) ? '' : '"';
 		
 		$segments = count($IN->SEGS);
 		$cat_trigger = $PREFS->ini('reserved_category_word');			
@@ -106,7 +109,7 @@ class Classee_body
 				break;
 		}
 				
-		$this->return_data = $r . '"';
+		$this->return_data = $open . $r . $close;
 	
 	} 
     
@@ -138,7 +141,7 @@ Your <body> tag would look like this:
 
 (In this case, you'd be logged-in as a SuperAdmin, and your category keyword would be "c".)
 
-Member groups 1 through 5 will be classed using their group names (superadmin, banned, guest, pending, member), whereas custom member groups will be classed "groupidN" (N being the member group ID).
+Member groups 1 through 5 will be classed using their group names (superadmin, banned, guest, pending, member), whereas custom member groups will be classed "groupid_N" (N being the member group ID).
 
 Numeric URI segments (for example, when calling an entry via its entry_id) will be prepended with the letter "n", i.e.
 
@@ -146,9 +149,13 @@ http://mydomain.com/magazine/articles/246
 
 Would yield:
 
-<body class="magazine articles n246 groupid7">
+<body class="magazine articles n246 groupid_7">
 
-Lastly, if there are no URI segments to be found, your <body> will get the class of "home".
+If there are no URI segments to be found, your <body> will get the class of "home".
+
+If you'd like to retreive only the class names, but not the class="" attribute itelf, simply add attr="false" as a parameter:
+
+{exp:classee_body attr="false"}
 
 <?php
 $buffer = ob_get_contents();

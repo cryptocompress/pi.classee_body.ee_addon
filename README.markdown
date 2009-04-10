@@ -1,0 +1,31 @@
+This plugin will apply several dynamic classes to your `&lt;body&gt;` tag.  Use it like so in your template:
+
+`&lt;body{exp:classee_body}&gt;`
+
+That's it.  You'll now get a classed-up `&lt;body&gt;` tag using URI segments, the current member group, and type of archive page (category, paged, or monthly).
+
+For example, if the current URI was:
+
+`http://mydomain.com/magazine/articles/c/politics/P20/ `
+
+Your `&lt;body&gt;` tag would look like this:
+
+`&lt;body class="magazine articles politics category paged P20 superadmin"&gt;`
+
+(In this case, you'd be logged-in as a SuperAdmin, and your category keyword would be "c".)
+
+Member groups 1 through 5 will be classed using their group names (superadmin, banned, guest, pending, member), whereas custom member groups will be classed "groupid_N" (N being the member group ID).
+
+Numeric URI segments (for example, when calling an entry via its entry_id) will be prepended with the letter "n", i.e.
+
+`http://mydomain.com/magazine/articles/246`
+
+Would yield:
+
+`&lt;body class="magazine articles n246 groupid_7"&gt;`
+
+Lastly, if there are no URI segments to be found, your `&lt;body&gt;` will get the class of "home".
+
+If you'd like to retreive only the class names, but not the `class=""` attribute itelf, simply add `attr="false"` as a parameter:
+
+`{exp:classee_body attr="false"}`
