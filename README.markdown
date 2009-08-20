@@ -1,16 +1,16 @@
-This plugin will apply several dynamic classes to your `&lt;body&gt;` tag.  Use it like so in your template:
+This plugin will apply several dynamic classes to your `<body>` tag.  Use it like so in your template:
 
-`&lt;body{exp:classee_body}&gt;`
+`<body{exp:classee_body}>`
 
-That's it.  You'll now get a classed-up `&lt;body&gt;` tag using URI segments, the current member group, and type of archive page (category, paged, or monthly).
+That's it.  You'll now get a classed-up `<body>` tag using URI segments, the current member group, and type of archive page (category, paged, or monthly).
 
 For example, if the current URI was:
 
 `http://mydomain.com/magazine/articles/c/politics/P20/ `
 
-Your `&lt;body&gt;` tag would look like this:
+Your `<body>` tag would look like this:
 
-`&lt;body class="magazine articles politics category paged P20 superadmin"&gt;`
+`<body class="magazine articles politics category paged P20 superadmin">`
 
 (In this case, you'd be logged-in as a SuperAdmin, and your category keyword would be "c".)
 
@@ -22,9 +22,9 @@ Numeric URI segments (for example, when calling an entry via its entry_id) will 
 
 Would yield:
 
-`&lt;body class="magazine articles n246 groupid_7"&gt;`
+`<body class="magazine articles n246 groupid_7">`
 
-Lastly, if there are no URI segments to be found, your `&lt;body&gt;` will get the class of "home".
+Lastly, if there are no URI segments to be found, your `<body>` will get the class of "home".
 
 If you'd like to retreive only the class names, but not the `class=""` attribute itelf, simply add `attr="false"` as a parameter:
 

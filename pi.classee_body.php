@@ -46,49 +46,60 @@ class Classee_body
 		$segments = count($IN->SEGS);
 		$cat_trigger = $PREFS->ini('reserved_category_word');			
 				
-		if($segments > 0) {
+		if($segments > 0)
+		{
 			
 			// class per URI segment
-			for($i = 1; $i <= $segments; $i++) {
+			for($i = 1; $i <= $segments; $i++)
+			{
 				$seg = $IN->fetch_uri_segment($i);
 				// Ignore the category indicator
-				if($seg != $cat_trigger) {
+				if($seg != $cat_trigger)
+				{
 					// prepend numeric segs
-					$pre = ''; if(is_numeric($seg)) { $pre = 'n'; }
+					$pre = '';
+					if(is_numeric(substr($seg,0,1)))
+					{
+						$pre = 'n';
+					}
 					$r .= $pre . $seg . ' ';
 				}
 			}
 			
 			// Check for pagination
-			if(ereg('P{1}[0-9]+', $IN->URI) != FALSE) {
+			if(ereg('P{1}[0-9]+', $IN->URI) != FALSE)
+			{
 				$r .= 'paged ';
 			}
 			
 			// Check for category
-			if(strpos($IN->URI, "/$cat_trigger/") !== FALSE || ereg('C{1}[0-9]+', $IN->URI) != FALSE) {
+			if(strpos($IN->URI, "/$cat_trigger/") !== FALSE || ereg('C{1}[0-9]+', $IN->URI) != FALSE)
+			{
 				$r .= 'category ';
 			}
 			
 			// Check for monthly archive
-			if ( $segments >= 2) {
+			if ( $segments >= 2)
+			{
 				$m = $IN->fetch_uri_segment($segments);
 				$y = $IN->fetch_uri_segment($segments-1);
-				if(ereg('^[0-9]{4}$', $y) != FALSE && ereg('^[0-9]{2}$', $m) != FALSE) {
+				if(ereg('^[0-9]{4}$', $y) != FALSE && ereg('^[0-9]{2}$', $m) != FALSE)
+				{
 					$r .= 'monthly ';
 				}
-			}			
-			
-		} else {
-			
+			}				
+		}
+		else
+		{	
 			// No segs, so we're on the home page
 			$r .= 'home ';		
-		
 		}
 		
 		// class for member group
 		$g = $SESS->userdata['group_id'];
 		
-		switch($g) {
+		switch($g)
+		{
 			case 1:
 				$r .= 'superadmin';
 				break;
@@ -108,9 +119,8 @@ class Classee_body
 				$r .= 'groupid_' . $g;
 				break;
 		}
-				
+						
 		$this->return_data = $open . $r . $close;
-	
 	} 
     
     
@@ -143,7 +153,7 @@ Your <body> tag would look like this:
 
 Member groups 1 through 5 will be classed using their group names (superadmin, banned, guest, pending, member), whereas custom member groups will be classed "groupid_N" (N being the member group ID).
 
-Numeric URI segments (for example, when calling an entry via its entry_id) will be prepended with the letter "n", i.e.
+Numeric URI segments (for example, when calling an entry via its entry_id), and URI segments that begin with a number, will be prepended with the letter "n", i.e.
 
 http://mydomain.com/magazine/articles/246
 
