@@ -1,30 +1,10 @@
 <?php
 
-/*
-=====================================================
- ExpressionEngine - by pMachine
------------------------------------------------------
- http://www.pmachine.com/
------------------------------------------------------
- Copyright (c) 2003,2004,2005 pMachine, Inc.
-=====================================================
- THIS IS COPYRIGHTED SOFTWARE
- PLEASE READ THE LICENSE AGREEMENT
- http://www.pmachine.com/expressionengine/license.html
-=====================================================
- File: pi.classee_body.php
------------------------------------------------------
- Purpose: Applies dynamic classes to your BODY tag.
-=====================================================
-*/
-
-
-
 $plugin_info = array(
 	'pi_name'			=> 'ClassEE Body',
-	'pi_version'		=> '1.0.1',
+	'pi_version'		=> '1.0.2',
 	'pi_author'			=> 'Derek Hogue',
-	'pi_author_url'		=> 'http://amphibian.info',
+	'pi_author_url'		=> 'http://github.com/amphibian/pi.classee_body.ee_addon/',
 	'pi_description'	=> 'Applies dynamic classes to your BODY tag.',
 	'pi_usage'			=> Classee_body::usage()
 );
@@ -38,7 +18,7 @@ class Classee_body
 		
 		$this->return_data = '';
 		
-		$r = '';		
+		$classes = '';		
 		$attr = $TMPL->fetch_param('attr');
 		$open = ( $attr == 'false' ) ? '' : ' class="';
 		$close = ( $attr == 'false' ) ? '' : '"';
@@ -62,20 +42,20 @@ class Classee_body
 					{
 						$pre = 'n';
 					}
-					$r .= $pre . $seg . ' ';
+					$classes .= $pre . $seg . ' ';
 				}
 			}
 			
 			// Check for pagination
-			if(ereg('P{1}[0-9]+', $IN->URI) != FALSE)
+			if(preg_match('/P{1}[0-9]+/', $IN->URI) != FALSE)
 			{
-				$r .= 'paged ';
+				$classes .= 'paged ';
 			}
 			
 			// Check for category
-			if(strpos($IN->URI, "/$cat_trigger/") !== FALSE || ereg('C{1}[0-9]+', $IN->URI) != FALSE)
+			if(strpos($IN->URI, "/$cat_trigger/") !== FALSE || preg_match('/C{1}[0-9]+/', $IN->URI) != FALSE)
 			{
-				$r .= 'category ';
+				$classes .= 'category ';
 			}
 			
 			// Check for monthly archive
@@ -83,16 +63,16 @@ class Classee_body
 			{
 				$m = $IN->fetch_uri_segment($segments);
 				$y = $IN->fetch_uri_segment($segments-1);
-				if(ereg('^[0-9]{4}$', $y) != FALSE && ereg('^[0-9]{2}$', $m) != FALSE)
+				if(preg_match('/^[0-9]{4}$/', $y) != FALSE && preg_match('/^[0-9]{2}$/', $m) != FALSE)
 				{
-					$r .= 'monthly ';
+					$classes .= 'monthly ';
 				}
 			}				
 		}
 		else
 		{	
 			// No segs, so we're on the home page
-			$r .= 'home ';		
+			$classes .= 'home ';		
 		}
 		
 		// class for member group
@@ -101,26 +81,78 @@ class Classee_body
 		switch($g)
 		{
 			case 1:
-				$r .= 'superadmin';
+				$classes .= 'superadmin ';
 				break;
 			case 2:
-				$r .= 'banned';
+				$classes .= 'banned ';
 				break;
 			case 3:
-				$r .= 'guest';
+				$classes .= 'guest ';
 				break;
 			case 4:
-				$r .= 'pending';
+				$classes .= 'pending ';
 				break;
 			case 5:
-				$r .= 'member';
+				$classes .= 'member ';
 				break;				
 			case ($g > 5):
-				$r .= 'groupid_' . $g;
+				$classes .= 'groupid_' . $g . ' ';
 				break;
 		}
+		
+		// Some lightweight browser detection
+		$browser = strtolower($_SERVER['HTTP_USER_AGENT']);
+		
+		if(strpos($browser, 'lynx') !== false)
+		{
+			$classes .= 'lynx ';
+		}
+		elseif(strpos($browser, 'chrome') !== false)
+		{
+			$classes .= 'chrome ';
+		}
+		elseif(strpos($browser, 'safari') !== false)
+		{
+			$classes .= 'safari ';
+			$safari = 'y';
+		}
+		elseif(strpos($browser, 'firefox') !== false)
+		{
+			$classes .= 'firefox ';
+		}
+		elseif(strpos($browser, 'gecko') !== false)
+		{
+			$classes .= 'gecko ';
+		}
+		elseif(strpos($browser, 'msie') !== false)
+		{
+			$classes .= 'ie ';
+		}
+		elseif(strpos($browser, 'opera') !== false)
+		{
+			$classes .= 'opera ';
+		}
+		elseif(strpos($browser, 'nav') !== false && strpos($browser, 'mozilla/4.') !== false)
+		{
+			$classes .= 'navigator ';
+		}
+		
+		if (isset($safari) && strpos($browser, 'mobile') !== false )
+		{
+			$classes .= 'iphone ';
+		}
+		
+		// Some platform detection		
+		if ( strpos($browser, 'win') !== false)
+		{
+			$classes .= 'win';
+		}
+		elseif(strpos($browser, 'mac') !== false)
+		{
+			$classes .= 'mac';
+		}
 						
-		$this->return_data = $open . $r . $close;
+		$this->return_data = $open . $classes . $close;
 	} 
     
     
