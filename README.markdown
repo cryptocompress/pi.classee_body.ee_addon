@@ -2,7 +2,7 @@ This plugin will apply several dynamic classes to your `<body>` tag.  Use it lik
 
 `<body{exp:classee_body}>`
 
-That's it.  You'll now get a classed-up `<body>` tag using URI segments, the current member group, and type of archive page (category, paged, or monthly).
+That's it.  You'll now get a classed-up `<body>` tag using URI segments, the current member group, type of archive page (category, paged, or monthly), browser and platform.
 
 For example, if the current URI was:
 
@@ -10,9 +10,9 @@ For example, if the current URI was:
 
 Your `<body>` tag would look like this:
 
-`<body class="magazine articles politics category paged P20 superadmin">`
+`<body class="magazine articles politics category paged P20 superadmin safari mac">`
 
-(In this case, you'd be logged-in as a SuperAdmin, and your category keyword would be "c".)
+(In this case, you'd be logged-in as a SuperAdmin, your category keyword would be "c", and you'd be browsing on a Mac using Safari.)
 
 Member groups 1 through 5 will be classed using their group names (superadmin, banned, guest, pending, member), whereas custom member groups will be classed "groupid_N" (N being the member group ID).
 
@@ -22,7 +22,7 @@ Numeric URI segments (for example, when calling an entry via its entry_id) will 
 
 Would yield:
 
-`<body class="magazine articles n246 groupid_7">`
+`<body class="magazine articles n246 groupid_7 firefox win">`
 
 Lastly, if there are no URI segments to be found, your `<body>` will get the class of "home".
 
