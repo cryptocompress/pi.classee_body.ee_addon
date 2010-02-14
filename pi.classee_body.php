@@ -2,7 +2,7 @@
 
 $plugin_info = array(
 	'pi_name'			=> 'ClassEE Body',
-	'pi_version'		=> '1.0.3',
+	'pi_version'		=> '1.0.4',
 	'pi_author'			=> 'Derek Hogue',
 	'pi_author_url'		=> 'http://github.com/amphibian/pi.classee_body.ee_addon/',
 	'pi_description'	=> 'Applies dynamic classes to your BODY tag.',
@@ -91,8 +91,8 @@ class Classee_body
 				case 5:
 					$classes[] = 'member';
 					break;				
-				case ($g > 5):
-					$classes[] = 'groupid_' . $g;
+				case ($group > 5):
+					$classes[] = 'groupid_' . $group;
 					break;
 			}
 		}
