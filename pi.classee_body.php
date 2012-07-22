@@ -19,7 +19,7 @@ class Classee_body
 		global $TMPL, $IN, $SESS, $PREFS;
 				
 		$attr = $TMPL->fetch_param('attr');
-		$browser = strtolower($_SERVER['HTTP_USER_AGENT']);
+		$browser = strtolower(@$_SERVER['HTTP_USER_AGENT']);
 		$cat_trigger = $PREFS->ini('reserved_category_word');
 		$classes = array();		
 		$disable = ($TMPL->fetch_param('disable')) ? explode('|', $TMPL->fetch_param('disable')) : array();
